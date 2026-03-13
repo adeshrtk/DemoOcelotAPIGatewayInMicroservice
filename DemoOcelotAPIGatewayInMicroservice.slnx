@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Gateway/Gateway.csproj" />
   <Project Path="Identity/Identity.csproj" />
+  <Project Path="SharedLibrary/SharedLibrary.csproj" />
   <Project Path="Weather/Weather.csproj" />
 </Solution>

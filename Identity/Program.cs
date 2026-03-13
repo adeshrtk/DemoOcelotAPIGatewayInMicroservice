@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseMiddleware<SharedLibrary.RestrictAccessMiddleware>();
 app.MapControllers();
 
 app.Run();

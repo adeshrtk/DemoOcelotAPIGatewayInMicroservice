@@ -1,3 +1,4 @@
+using Gateway.Middlewares;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -17,7 +18,7 @@ var app = builder.Build();
 
 app.UseCors();
 app.UseHttpsRedirection();
-
+app.UseMiddleware<InterceptionMiddleware>();
 app.UseAuthorization();
 app.UseOcelot().Wait();
 
