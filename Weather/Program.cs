@@ -2,7 +2,7 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//1. Add the native .Net 10 OpenAPI service
+//Add the native .Net 10 OpenAPI service
 builder.Services.AddOpenApi();
 
 // Add services to the container.
