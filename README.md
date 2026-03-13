@@ -24,6 +24,22 @@ Routing (configured in `Gateway/ocelot.json`)
 - Upstream `GET|POST|PUT|DELETE|OPTIONS /api/weatherforecast` -> Downstream `http://localhost:7002/api/weatherforecast`
 - Global configuration sets `BaseUrl` to the gateway HTTPS address `https://localhost:7000`.
 
+Access restriction (new)
+- Direct access to the `Identity` and `Weather` services is restricted. Each downstream API includes a middleware `SharedLibrary.RestrictAccessMiddleware` that denies requests without a `Referrer` header (returns HTTP 403).
+- The Gateway injects the required header using `Gateway.Middlewares.InterceptionMiddleware` before proxying requests, so requests routed through the API Gateway succeed.
+- Purpose: ensure all traffic goes through the Gateway (for routing, authentication, logging, etc.) and prevent direct client calls to service endpoints.
+
+Behavior examples
+- Calling the gateway (allowed):
+  - `curl -k https://localhost:7000/api/user` -> forwarded to Identity service with injected `Referrer` header.
+  - `curl -k https://localhost:7000/api/weatherforecast` -> forwarded to Weather service with injected `Referrer` header.
+- Calling a service directly (forbidden by default):
+  - `curl http://localhost:7001/api/user` -> returns HTTP 403 (Referrer header missing).
+  - `curl http://localhost:7002/api/weatherforecast` -> returns HTTP 403 (Referrer header missing).
+
+If you need to call a downstream service directly for debugging, you can add a `Referrer` header to your request (not recommended for production):
+  - `curl -H "Referrer: Api-Gateway" http://localhost:7001/api/user`
+
 How to run
 - In Visual Studio (recommended):
   1. Open the solution in Visual Studio.
